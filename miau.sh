@@ -21,7 +21,7 @@ BOLD='\033[1m'
 #Disco      
     #Usar parted para listar discos bajo parametros 
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    echo "${BOLD}AVAILABLE DEVICES${RESET}"
+    echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
     echo ""
     echo $discosdisponibles
     echo ""
