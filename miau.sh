@@ -18,6 +18,19 @@ BOLD='\033[1m'
     cat banner.txt        
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
+#Disco      
+    #Usar parted para listar discos bajo parametros 
+    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    echo "Rutas de Disco disponible: "
+    echo ""
+    echo $discosdisponibles
+    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    read -p "disk-> " disk 
+
 #Usuario
     echo -e "${BOLD}USER CONFIGURATION${RESET}"      
     echo ""          
@@ -60,18 +73,6 @@ BOLD='\033[1m'
     else
         echo "El sistema es BIOS"
     fi
-
-#Disco      
-    # discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    # printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-    # echo ""
-    # echo "Rutas de Disco disponible: "
-    # echo ""
-    # echo $discosdisponibles
-    # echo ""
-    # printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-    # echo ""
-    # read -p "Disk: " disk 
 
 #Particionado
 
