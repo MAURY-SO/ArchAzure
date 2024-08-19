@@ -8,16 +8,14 @@ Installer Arch User
     clear               
     cat banner.txt        
 
-#Disco
-    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    clear
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+#Usuario                
+    # echo ""
+    # read -p "Introduce tu disco a instalar Arch: " disco
     echo ""
-    echo "Rutas de Disco disponible: "
+    read -p "Introduce Nombre usuario Nuevo: " user
     echo ""
-    echo $discosdisponibles
+    read -p "Introduce la clave de $user / root: " passwd
     echo ""
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
 #Idioma del sistema
     idioma=$(curl https://ipapi.co/languages)".UTF8"
