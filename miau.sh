@@ -8,7 +8,7 @@ Installer Arch User
     clear               
     cat banner.txt        
 
-#Disco
+#Disco      
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
@@ -20,16 +20,25 @@ Installer Arch User
 
 #Usuario                
     echo ""
-    read -p "Disk: " disk
+    read -p "Disk: " disk       
     echo ""
     read -p "Username: " user
     echo ""
-    read -p "Password$user / root: " passwd
+    read -p "Password $user-root: " passwd
     echo ""
 
 #Idioma del sistema
     idioma=$(curl https://ipapi.co/languages)".UTF8"
     #echo $idioma
+
+#--->Proceso de instalacion
+
+#UEFI-BIOS
+    if test -d "/sys/firmware/efi"; then
+        echo "El sistema es UEFI"
+    else
+        echo "El sistema es BIOS"
+    fi
 
 #Instalar paquetes post-instalacion
     #sudo pacman -S --needed -< packages.txt
