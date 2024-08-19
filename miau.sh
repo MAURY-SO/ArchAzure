@@ -27,9 +27,9 @@ BOLD='\033[1m'
     echo ""
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
+    echo -e "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
     read -p "disk (device path) -> " disk 
     echo ""
-    echo "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
     echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
