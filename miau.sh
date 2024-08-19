@@ -29,8 +29,13 @@ BOLD='\033[1m'
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
     read -p "disk (device path) -> " disk 
+    echo ""
+    echo "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
+
+    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo -e "${BOLD}USER CONFIGURATION${RESET}"      
     echo ""          
     read -p "username-> " user_aux
