@@ -20,7 +20,7 @@ Installer Arch User
 
 #Usuario                
     echo ""
-    read -p "Introduce tu disco a instalar Arch: " disco
+    read -p "Disk: " disk
     echo ""
     read -p "Username: " user
     echo ""
