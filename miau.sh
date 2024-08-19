@@ -19,7 +19,7 @@ Installer Arch User
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
 #Disco      
-    Usar parted para listar discos bajo parametros 
+    #Usar parted para listar discos bajo parametros 
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
     echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
     echo ""
@@ -71,13 +71,17 @@ Installer Arch User
     idioma=$(curl https://ipapi.co/languages)".UTF8"
     #echo $idioma
 
+
 #--->Proceso de instalacion
 
 #UEFI-BIOS
+    ue=0
     if test -d "/sys/firmware/efi"; then
         echo "El sistema es UEFI"
-    else
+        ue=1
+    else                    
         echo "El sistema es BIOS"
+        ue=0
     fi
 
 #Particionado
