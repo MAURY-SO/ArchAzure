@@ -21,15 +21,14 @@ BOLD='\033[1m'
 #Disco      
     #Usar parted para listar discos bajo parametros 
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
-    echo "Rutas de Disco disponible: "
+    echo "Available devices: "
     echo ""
     echo $discosdisponibles
     echo ""
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo ""
-    read -p "disk-> " disk 
+    read -p "disk (device path) -> " disk 
 
 #Usuario
     echo -e "${BOLD}USER CONFIGURATION${RESET}"      
