@@ -30,7 +30,7 @@ BOLD='\033[1m'
     echo ""
     read -p "disk (device path) -> " disk 
     echo ""
-    echo "Your device select -> ${BOLD}$disk${RESET}" 
+    echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
 
