@@ -8,10 +8,10 @@ Installer Arch User
 #STYLE
 
 # Definir códigos de color
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-RESET='\033[0m'
-BOLD='\033[1m'
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    RESET='\033[0m'
+    BOLD='\033[1m'
 
 #--->Banner
     clear               
@@ -20,17 +20,18 @@ BOLD='\033[1m'
 
 #Disco      
     #Usar parted para listar discos bajo parametros 
-    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
-    echo ""
-    echo $discosdisponibles
-    echo ""
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-    echo ""
-    echo -e "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
-    read -p "disk (device path) -> " disk 
-    echo ""
-    echo -e "Your device select -> ${BOLD}$disk${RESET}" 
+    # discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
+    # echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
+    # echo ""
+    # echo $discosdisponibles
+    # echo ""
+    # printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    # echo ""
+    # echo -e "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
+    # echo ""
+    # read -p "disk (device path) -> " disk 
+    # echo ""
+    # echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
 
@@ -47,14 +48,15 @@ BOLD='\033[1m'
     loop=true
     while $loop;
     do
-        read -sp "password-> " passwd
+        read -sp "password-> " passwd_aux1
         echo ""
-        read -sp "retype your password-> " passwd_aux
+        read -sp "retype your password-> " passwd_aux2
         echo ""
         
-        if [ "$passwd" = "$passwd_aux" ]; then
+        if [ "$passwd_aux1" = "$passwd_aux2" ]; then
             echo ""
             echo -e "${GREEN}${BOLD}Password pased!!!${RESET}"
+            passwd=${passwd_aux1}
             loop=false
         else
             echo ""
