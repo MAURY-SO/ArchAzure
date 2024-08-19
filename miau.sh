@@ -19,31 +19,17 @@ BOLD='\033[1m'
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
 #Disco      
-    # Obtener la lista de discos disponibles
+    #Usar parted para listar discos bajo parametros 
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-
-    # Crear un array para almacenar los discos
-    discos=()
-    while IFS= read -r linea; do
-        discos+=("$linea")
-    done <<< "$discosdisponibles"
-
-    # Mostrar el menú y permitir seleccionar una opción
-    echo "Selecciona un disco:"
-    PS3="Introduce el número de la opción: "
-    select disco in "${discos[@]}"; do
-        if [[ -n "$disco" ]]; then
-            echo "Has seleccionado el disco: $disco"
-            # Almacenar la ruta del disco seleccionado en una variable
-            disco_seleccionado="$disco"
-            break
-        else
-            echo "Opción no válida. Por favor, selecciona un número válido."
-        fi
-    done
-
-# Imprimir o utilizar la ruta del disco seleccionado
-echo "Ruta del disco seleccionado: $disco_seleccionado"
+    echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
+    echo ""
+    echo $discosdisponibles
+    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    read -p "disk (device path) -> " disk 
+    echo ""
+    echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
 
