@@ -21,9 +21,7 @@ Installer Arch User
 #Usuario                
     echo ""
     read -p "Disk: " disk       
-    echo ""
     read -p "Username: " user
-    echo ""
     read -p "Password $user-root: " passwd
     echo ""
 
@@ -39,6 +37,11 @@ Installer Arch User
     else
         echo "El sistema es BIOS"
     fi
+
+#Particionado
+
+    #UEFI
+    
 
 #Instalar paquetes post-instalacion
     #sudo pacman -S --needed -< packages.txt
