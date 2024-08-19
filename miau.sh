@@ -19,19 +19,19 @@ Installer Arch User
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
 #Disco      
-    #Usar parted para listar discos bajo parametros 
-    # discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
-    # echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
-    # echo ""
-    # echo $discosdisponibles
-    # echo ""
-    # printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-    # echo ""
-    # echo -e "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
-    # echo ""
-    # read -p "disk (device path) -> " disk 
-    # echo ""
-    # echo -e "Your device select -> ${BOLD}$disk${RESET}" 
+    Usar parted para listar discos bajo parametros 
+    discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
+    echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
+    echo ""
+    echo $discosdisponibles
+    echo ""
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    echo -e "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
+    echo ""
+    read -p "disk (device path) -> " disk 
+    echo ""
+    echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
 
