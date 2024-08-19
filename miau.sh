@@ -29,6 +29,7 @@ BOLD='\033[1m'
     echo ""
     read -p "disk (device path) -> " disk 
     echo ""
+    echo "${RED}${BOLD}IMPORTANT, SELECT CORRECTLY${RESET}"
     echo -e "Your device select -> ${BOLD}$disk${RESET}" 
 
 #Usuario
