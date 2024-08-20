@@ -134,15 +134,144 @@ Installer Arch User
 #--->Proceso de instalacion
 
 #UEFI-BIOS
+    ue=false
     if test -d "/sys/firmware/efi"; then
         echo "El sistema es UEFI"
+        ue=true
     else                    
         echo "El sistema es BIOS"
+        ue=false
     fi
 
 #Particionado
 
-    #UEFI
+    if [ $ue == true ]
+    then
+        clear
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+        echo ""
+        echo -e "Your system is ${BOLD}UEFI${RESET}"
+        echo ""
+        date "+%F %H:%M"
+        sleep 3
+
+        swapsize=$(free --giga | awk '/^Mem:/{print $2}')
+        #dd if=/dev/zero of="${disco}" bs=4M conv=fsync oflag=direct status=progress
+        (echo Ignore) | sgdisk --zap-all ${disk}
+        #parted ${disco} mklabel gpt
+        (echo 2; echo w; echo Y) | gdisk ${disk}
+        sgdisk ${disk} -n=1:0:+100M -t=1:ef00
+        sgdisk ${disk} -n=2:0:+${swapsize}G -t=2:8200
+        sgdisk ${disk} -n=3:0:0
+        fdisk -l ${disk} > /tmp/partition
+        echo ""
+        cat /tmp/partition
+        sleep 3
+
+        partition="$(cat /tmp/partition | grep /dev/ | awk '{if (NR!=1) {print}}' | sed 's/*//g' | awk -F ' ' '{print $1}')"
+
+        echo $partition | awk -F ' ' '{print $1}' >  boot-efi
+        echo $partition | awk -F ' ' '{print $2}' >  swap-efi
+        echo $partition | awk -F ' ' '{print $3}' >  root-efi
+
+        clear
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+        echo ""
+        echo -e "${BOLD}Your UEFI partition is:${RESET}" 
+        cat boot-efi
+        echo ""
+        echo -e "${BOLD}Your SWAP partition is:${RESET}"
+        cat swap-efi
+        echo ""
+        echo -e "${BOLD}Your ROOT partition is:${RESET}"
+        cat root-efi
+        sleep 3
+
+        clear
+        echo ""
+        echo "Formatting Partitions"
+        echo ""
+        mkfs.ext4 $(cat root-efi) 
+        mount $(cat root-efi) /mnt 
+
+        mkdir -p /mnt/efi 
+        mkfs.fat -F 32 $(cat boot-efi) 
+        mount $(cat boot-efi) /mnt/efi 
+
+        mkswap $(cat swap-efi) 
+        swapon $(cat swap-efi)
+
+        rm boot-efi
+        rm swap-efi
+        rm root-efi
+
+        clear
+        echo ""
+        echo -e "${BOLD}Check the mount point at MOUNTPOINT - PRESS ENTER${RESET}"
+        echo ""
+        lsblk -l
+        read line
+
+
+    else
+        clear
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+        echo ""
+        echo -e "Your system is ${BOLD}BIOS${RESET}"
+        echo ""
+        date "+%F %H:%M"
+        sleep 3
+
+        swapsize=$(free --giga | awk '/^Mem:/{print $2}')
+        #dd if=/dev/zero of="${disco}" bs=100M count=10 status=progress
+        sgdisk --zap-all ${disco}
+        (echo o; echo n; echo p; echo 1; echo ""; echo +100M; echo n; echo p; echo 2; echo ""; echo +${swapsize}G; echo n; echo p; echo 3; echo ""; echo ""; echo t; echo 2; echo 82; echo a; echo 1; echo w; echo q) | fdisk ${disco}
+        fdisk -l ${disco} > /tmp/partition 
+        cat /tmp/partition
+        sleep 3
+
+        partition="$(cat /tmp/partition | grep /dev/ | awk '{if (NR!=1) {print}}' | sed 's/*//g' | awk -F ' ' '{print $1}')"
+
+        echo $partition | awk -F ' ' '{print $1}' >  boot-bios
+        echo $partition | awk -F ' ' '{print $2}' >  swap-bios
+        echo $partition | awk -F ' ' '{print $3}' >  root-bios
+
+        clear
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+        echo ""
+        echo -e "${BOLD}Your BOOT partition is:${RESET}" 
+        cat boot-bios
+        echo ""
+        echo -e "${BOLD}Your SWAP partition is:${RESET}" 
+        cat swap-bios
+        echo ""
+        echo -e "${BOLD}Your ROOT partition is:${RESET}" 
+        cat root-bios
+        sleep 3
+
+        clear
+        echo ""
+        echo "Formatting Partitions"
+        echo ""
+        mkfs.ext4 $(cat root-bios) 
+        mount $(cat root-bios) /mnt 
+
+        mkdir -p /mnt/boot
+        mkfs.ext4 $(cat boot-bios) 
+        mount $(cat boot-bios) /mnt/boot
+
+        mkswap $(cat swap-bios) 
+        swapon $(cat swap-bios)
+
+        clear
+        echo ""
+        echo -e "${BOLD}Check the mount point at MOUNTPOINT - PRESS ENTER${RESET}"
+        echo ""
+        lsblk -l
+        sleep 4
+        clear
+        
+    fi
 
 
 #Instalar paquetes post-instalacion
