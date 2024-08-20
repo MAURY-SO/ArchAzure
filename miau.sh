@@ -15,11 +15,13 @@ Installer Arch User
 
 #--->Banner
     clear               
-    cat banner.txt        
+    cat banner.txt  
+    echo -e "power by ${BOLD}MAURY${RESET}"     
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
 #Disco      
     #Usar parted para listar discos bajo parametros 
+    
     discosdisponibles=$(echo "print devices" | parted | grep /dev/ | awk '{if (NR!=1) {print}}' | sed '/sr/d')
     echo -e "${BOLD}AVAILABLE DEVICES${RESET}"
     echo ""
@@ -44,7 +46,9 @@ Installer Arch User
     user=${user_aux,,}
     echo -e "Your username --> ${BOLD}$user${RESET}"
     echo ""
-    echo "Enter the root - $user password (your password is hide)"
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo ""
+    echo -e "${BOLD}Enter the root - $user password ${RESET}(your password is hide)"
     loop=true
     while $loop;
     do
@@ -60,28 +64,69 @@ Installer Arch User
             loop=false
         else
             echo ""
-            echo -e "${RED}${BOLD}Password incorrect!!!${RESET}"
+            echo -e "${RED}${BOLD}Passwords don't match!!!${RESET}"
             echo ""
         fi
 
     done       
     echo ""                    
 
+#Escritorios
+
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo -e "${BOLD}SELECT YOUR PROFILE: (1 - 2 - 3 - 4)${RESET}"
+    
+    #Funcion
+    loop=true
+    desks=("MINIMAL" "KDE" "XFCE" "GNOME")
+    while $loop; do
+        echo ""
+        echo "1. ${desks[0]}"
+        echo "2. ${desks[1]}"
+        echo "3. ${desks[2]}"
+        echo "4. ${desks[3]}"
+        echo ""
+        read -p "Select your profile -> " desktop        
+        echo ""
+
+        if [ "$desktop" -ge 1 ] && [ "$desktop" -le 4 ]; then
+            loop=false
+        else
+            echo -e "${RED}Please select an option!!!${RESET}"
+        fi
+
+    done
+    desktop=$((desktop -1))
+    echo -e "Your profile -> ${BOLD}${desks[$desktop]}${RESET}" 
+    echo ""
+
+#Install
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    echo -e "${BOLD}INSTALL OPTIONS AND ARCH INSTALLATION${RESET}"
+    echo ""
+    echo -e "disk -> ${BOLD}$disk${RESET}"
+    echo ""
+    echo -e "username -> ${BOLD}$user${RESET}"
+    echo ""
+    echo -e "password -> ${BOLD}$passwd${RESET}"
+    echo ""
+    echo -e "profile -> ${BOLD}${desks[$desktop]}${RESET}"
+    echo ""
+    echo "Press ENTER to continue or CTRL + C to exit"
+    read line
+
+
 #Idioma del sistema
     idioma=$(curl https://ipapi.co/languages)".UTF8"
     #echo $idioma
-
-
+    
 #--->Proceso de instalacion
 
 #UEFI-BIOS
-    ue=0
     if test -d "/sys/firmware/efi"; then
         echo "El sistema es UEFI"
-        ue=1
     else                    
         echo "El sistema es BIOS"
-        ue=0
     fi
 
 #Particionado
