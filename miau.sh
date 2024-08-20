@@ -15,9 +15,15 @@ Installer Arch User
 
 #--->Banner
     clear               
-    cat banner.txt  
-    echo -e "power by ${BOLD}MAURY${RESET}"     
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+    banner(){
+
+        cat banner.txt  
+        echo -e "power by ${BOLD}MAURY${RESET}"     
+        printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
+
+    }
+
+    banner
 
 #Disco      
     #Usar parted para listar discos bajo parametros 
@@ -101,6 +107,8 @@ Installer Arch User
     echo ""
 
 #Install
+    clear
+    banner
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo -e "${BOLD}INSTALL OPTIONS AND ARCH INSTALLATION${RESET}"
     echo ""
@@ -114,6 +122,9 @@ Installer Arch User
     echo ""
     echo "Press ENTER to continue or CTRL + C to exit"
     read line
+    echo ""
+    sleep 3
+    echo -e "${GREEN}DONE!!!${RESET}"
 
 
 #Idioma del sistema
