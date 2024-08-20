@@ -109,7 +109,6 @@ Installer Arch User
 #Install
     clear
     banner
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     echo -e "${BOLD}INSTALL OPTIONS AND ARCH INSTALLATION${RESET}"
     echo ""
     echo -e "disk -> ${BOLD}$disk${RESET}"
@@ -125,6 +124,7 @@ Installer Arch User
     echo ""
     sleep 3
     echo -e "${GREEN}DONE!!!${RESET}"
+    echo ""
 
 
 #Idioma del sistema
